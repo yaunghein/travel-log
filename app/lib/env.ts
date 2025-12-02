@@ -2,8 +2,10 @@ import { z } from 'zod'
 
 const EnvSchema = z.object({
   NODE_ENV: z.string(),
+  TURSO_DATABASE_URL: z.string(),
+  TURSO_AUTH_TOKEN: z.string(),
 })
-
 export type EnvSchema = z.infer<typeof EnvSchema>
 
-export default EnvSchema.parse(process.env)
+const env = EnvSchema.parse(process.env)
+export default env
