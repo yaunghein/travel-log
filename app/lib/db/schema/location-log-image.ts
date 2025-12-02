@@ -1,14 +1,17 @@
+import { randomUUID } from 'crypto'
 import { sqliteTable, text, int } from 'drizzle-orm/sqlite-core'
 import { locationLog } from './location-log'
 import { user } from './auth'
 
 export const locationLogImage = sqliteTable('locationLogImage', {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: text()
+    .primaryKey()
+    .$default(() => randomUUID()),
   key: text().notNull(),
-  locationLogId: int()
+  locationLogId: text()
     .notNull()
     .references(() => locationLog.id),
-  userId: int()
+  userId: text()
     .notNull()
     .references(() => user.id),
   createdAt: int()

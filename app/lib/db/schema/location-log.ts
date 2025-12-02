@@ -1,19 +1,22 @@
+import { randomUUID } from 'crypto'
 import { sqliteTable, text, int } from 'drizzle-orm/sqlite-core'
 import { location } from './location'
 import { user } from './auth'
 
 export const locationLog = sqliteTable('locationLog', {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: text()
+    .primaryKey()
+    .$default(() => randomUUID()),
   name: text().notNull(),
   description: text(),
   startedAt: int().notNull(),
   endedAt: int().notNull(),
   lat: int().notNull(),
   long: int().notNull(),
-  locationId: int()
+  locationId: text()
     .notNull()
     .references(() => location.id),
-  userId: int()
+  userId: text()
     .notNull()
     .references(() => user.id),
   createdAt: int()

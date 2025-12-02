@@ -2,33 +2,32 @@ import { relations, sql } from 'drizzle-orm'
 import { sqliteTable, text, integer, index, int } from 'drizzle-orm/sqlite-core'
 
 export const user = sqliteTable('user', {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: text('id').primaryKey(),
   name: text().notNull(),
   email: text().notNull().unique(),
   emailVerified: integer({ mode: 'boolean' }).default(false).notNull(),
   image: text(),
-  createdAt: int()
-    .notNull()
-    .$default(() => Date.now()),
-  updatedAt: int()
-    .notNull()
-    .$default(() => Date.now())
-    .$onUpdate(() => Date.now()),
+  createdAt: integer({ mode: 'timestamp_ms' })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .notNull(),
+  updatedAt: integer({ mode: 'timestamp_ms' })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
 })
 
 export const session = sqliteTable(
   'session',
   {
-    id: int().primaryKey({ autoIncrement: true }),
-    expiresAt: int().notNull(),
+    id: text('id').primaryKey(),
+    expiresAt: integer({ mode: 'timestamp_ms' }).notNull(),
     token: text().notNull().unique(),
-    createdAt: int()
-      .notNull()
-      .$default(() => Date.now()),
-    updatedAt: int()
-      .notNull()
-      .$default(() => Date.now())
-      .$onUpdate(() => Date.now()),
+    createdAt: integer({ mode: 'timestamp_ms' })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .notNull(),
+    updatedAt: integer({ mode: 'timestamp_ms' })
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
     ipAddress: text(),
     userAgent: text(),
     userId: text()
@@ -41,26 +40,29 @@ export const session = sqliteTable(
 export const account = sqliteTable(
   'account',
   {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: text('id').primaryKey(),
     accountId: text().notNull(),
     providerId: text().notNull(),
-    userId: text('user_id')
+    userId: text()
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     accessToken: text(),
     refreshToken: text(),
     idToken: text(),
-    accessTokenExpiresAt: integer(),
-    refreshTokenExpiresAt: integer(),
+    accessTokenExpiresAt: integer({
+      mode: 'timestamp_ms',
+    }),
+    refreshTokenExpiresAt: integer({
+      mode: 'timestamp_ms',
+    }),
     scope: text(),
     password: text(),
-    createdAt: int()
-      .notNull()
-      .$default(() => Date.now()),
-    updatedAt: int()
-      .notNull()
-      .$default(() => Date.now())
-      .$onUpdate(() => Date.now()),
+    createdAt: integer({ mode: 'timestamp_ms' })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .notNull(),
+    updatedAt: integer({ mode: 'timestamp_ms' })
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
   },
   (table) => [index('account_userId_idx').on(table.userId)]
 )
@@ -68,17 +70,17 @@ export const account = sqliteTable(
 export const verification = sqliteTable(
   'verification',
   {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: text('id').primaryKey(),
     identifier: text().notNull(),
     value: text().notNull(),
-    expiresAt: integer().notNull(),
-    createdAt: int()
-      .notNull()
-      .$default(() => Date.now()),
-    updatedAt: int()
-      .notNull()
-      .$default(() => Date.now())
-      .$onUpdate(() => Date.now()),
+    expiresAt: integer({ mode: 'timestamp_ms' }).notNull(),
+    createdAt: integer({ mode: 'timestamp_ms' })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .notNull(),
+    updatedAt: integer({ mode: 'timestamp_ms' })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
   },
   (table) => [index('verification_identifier_idx').on(table.identifier)]
 )
