@@ -1,8 +1,6 @@
 <template>
   <div class="navbar bg-primary text-primary-content">
-    <NuxtLink to="/" class="btn btn-ghost text-xl navbar-start">
-      Travel Log
-    </NuxtLink>
+    <NuxtLink to="/" class="text-xl navbar-start"> Travel Log </NuxtLink>
     <div class="navbar-end">
       <AppThemeToggle />
       <AuthButton />
