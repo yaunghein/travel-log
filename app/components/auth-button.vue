@@ -9,7 +9,7 @@ const authStore = useAuthStore()
     v-if="!authStore.loading && authStore.user"
     class="dropdown dropdown-end"
   >
-    <div tabindex="0" role="button" class="btn m-1">
+    <div tabindex="0" role="button" class="btn btn-primary m-1">
       <div v-if="authStore.user.image" class="avatar">
         <div class="w-5 rounded-full">
           <img :src="authStore.user.image" :alt="authStore.user.name" />
