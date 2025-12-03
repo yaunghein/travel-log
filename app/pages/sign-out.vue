@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/auth'
-
 const authStore = useAuthStore()
-
 onMounted(authStore.signOut)
 </script>
 
