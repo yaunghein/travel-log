@@ -4,9 +4,7 @@ const error = route.query.error || 'An unknown error occured.'
 </script>
 
 <template>
-  <div
-    class="card bg-base-300 container mt-4 min-h-72 text-center mx-auto flex items-center justify-center flex-col"
-  >
+  <div class="card bg-base-300 container mx-auto mt-4 flex min-h-72 flex-col items-center justify-center text-center">
     <div role="alert" class="alert alert-error">
       <span>Oh no! {{ error }}</span>
     </div>

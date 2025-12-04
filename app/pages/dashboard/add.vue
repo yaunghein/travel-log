@@ -36,9 +36,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 onBeforeRouteLeave(() => {
   if (meta.value.dirty && !submitted.value) {
-    const confirm = window.confirm(
-      'Are you sure you want to leave? All unsaved changes will be lost!'
-    )
+    const confirm = window.confirm('Are you sure you want to leave? All unsaved changes will be lost!')
     if (confirm) return true
     return false
   }
@@ -46,18 +44,13 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-  <div class="container max-w-md mx-auto">
-    <h1 class="text-lg my-4">Add Location</h1>
+  <div class="container mx-auto max-w-md">
+    <h1 class="my-4 text-lg">Add Location</h1>
     <div v-if="submitError" role="alert" class="alert alert-error mb-2">
       <span>{{ submitError }}</span>
     </div>
     <form @submit.prevent="onSubmit">
-      <AppFormField
-        name="name"
-        label="Name"
-        :error="errors.name"
-        :disabled="loading"
-      />
+      <AppFormField name="name" label="Name" :error="errors.name" :disabled="loading" />
       <AppFormField
         name="description"
         label="Description"
@@ -65,29 +58,16 @@ onBeforeRouteLeave(() => {
         type="textarea"
         :disabled="loading"
       />
-      <AppFormField
-        name="lat"
-        label="Latitide"
-        :error="errors.lat"
-        :disabled="loading"
-      />
-      <AppFormField
-        name="long"
-        label="Longitude"
-        :error="errors.long"
-        :disabled="loading"
-      />
-      <div class="flex justify-end gap-4 mt-4">
+      <AppFormField name="lat" label="Latitide" :error="errors.lat" :disabled="loading" />
+      <AppFormField name="long" label="Longitude" :error="errors.long" :disabled="loading" />
+      <div class="mt-4 flex justify-end gap-4">
         <button type="button" class="btn btn-ghost" @click="router.back()">
           <Icon name="tabler:arrow-left" size="20" />
           Cancel
         </button>
         <button :disabled="loading" type="submit" class="btn btn-primary">
           Add
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+          <span v-if="loading" class="loading loading-spinner loading-sm"></span>
           <Icon v-else name="tabler:circle-plus-filled" size="20" />
         </button>
       </div>

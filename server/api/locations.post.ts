@@ -19,14 +19,15 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, InsertLocation.safeParse)
 
   if (!body.success) {
-    const statusMessage = body.error.issues
-      .map((issue) => `${issue.path.join('')}: ${issue.message}`)
-      .join('; ')
+    const statusMessage = body.error.issues.map((issue) => `${issue.path.join('')}: ${issue.message}`).join('; ')
 
-    const data = body.error.issues.reduce((errors, issue) => {
-      errors[issue.path.join('')] = issue.message
-      return errors
-    }, {} as Record<string, string>)
+    const data = body.error.issues.reduce(
+      (errors, issue) => {
+        errors[issue.path.join('')] = issue.message
+        return errors
+      },
+      {} as Record<string, string>
+    )
 
     return sendError(
       event,
