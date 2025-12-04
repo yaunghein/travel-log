@@ -4,6 +4,7 @@ defineProps<{
   label: string
   error?: string
   type?: 'text' | 'textarea' | 'number'
+  disabled?: boolean
 }>()
 </script>
 
@@ -14,6 +15,7 @@ defineProps<{
       :as="type || 'input'"
       :type="type || 'text'"
       :name="name"
+      :disabled="disabled"
       class="input w-full"
       :class="{
         'input-error': error,
@@ -21,6 +23,6 @@ defineProps<{
         textarea: type === 'textarea',
       }"
     />
-    <p v-if="error" class="fieldset-label">{{ error }}</p>
+    <p v-if="error" class="fieldset-label text-error">{{ error }}</p>
   </fieldset>
 </template>

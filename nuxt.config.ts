@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
     '@vee-validate/nuxt',
+    'nuxt-csurf',
   ],
   css: ['~/assets/css/main.css'],
   vite: {
