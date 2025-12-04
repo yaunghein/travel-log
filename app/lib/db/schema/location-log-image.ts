@@ -1,12 +1,9 @@
-import { randomUUID } from 'crypto'
 import { sqliteTable, text, int } from 'drizzle-orm/sqlite-core'
 import { locationLog } from './location-log'
 import { user } from './auth'
 
 export const locationLogImage = sqliteTable('locationLogImage', {
-  id: text()
-    .primaryKey()
-    .$default(() => randomUUID()),
+  id: text().primaryKey(),
   key: text().notNull(),
   locationLogId: text()
     .notNull()

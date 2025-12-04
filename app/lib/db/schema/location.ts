@@ -1,11 +1,10 @@
-import { randomUUID } from 'crypto'
 import { sqliteTable, int, text, real } from 'drizzle-orm/sqlite-core'
+import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
 import { user } from './auth'
 
 export const location = sqliteTable('location', {
-  id: text()
-    .primaryKey()
-    .$default(() => randomUUID()),
+  id: text().primaryKey(),
   name: text().notNull(),
   slug: text().notNull().unique(),
   description: text(),
@@ -21,4 +20,15 @@ export const location = sqliteTable('location', {
     .notNull()
     .$default(() => Date.now())
     .$onUpdate(() => Date.now()),
+})
+
+export const InsertLocation = createInsertSchema(location, {
+  lat: () => z.coerce.number(),
+  long: () => z.coerce.number(),
+}).omit({
+  id: true,
+  slug: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
 })

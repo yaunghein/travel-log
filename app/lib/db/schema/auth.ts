@@ -2,7 +2,7 @@ import { relations, sql } from 'drizzle-orm'
 import { sqliteTable, text, integer, index, int } from 'drizzle-orm/sqlite-core'
 
 export const user = sqliteTable('user', {
-  id: text('id').primaryKey(),
+  id: text().primaryKey(),
   name: text().notNull(),
   email: text().notNull().unique(),
   emailVerified: integer({ mode: 'boolean' }).default(false).notNull(),
