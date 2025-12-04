@@ -1,4 +1,6 @@
-import { randomUUID } from 'crypto'
+import { eq } from 'drizzle-orm'
+import { nanoid } from 'nanoid'
+import slugify from 'slug'
 import db from '~/lib/db'
 import { InsertLocation, location } from '~/lib/db/schema'
 
@@ -36,13 +38,21 @@ export default defineEventHandler(async (event) => {
     )
   }
 
+  let slug = slugify(body.data.name)
+  const existing = await db.query.location.findFirst({
+    where: eq(location.slug, slug),
+  })
+  if (existing) {
+    slug += `-${nanoid()}`
+  }
+
   const [created] = await db
     .insert(location)
     .values({
       ...body.data,
-      slug: body.data.name.replace(' ', '-').toLowerCase(),
+      slug,
       userId: event.context.user.id,
-      id: randomUUID(),
+      id: nanoid(),
     })
     .returning()
 
