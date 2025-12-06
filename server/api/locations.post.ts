@@ -1,11 +1,10 @@
-import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import slugify from 'slug'
 import db from '~/lib/db'
 import { InsertLocation, location } from '~/lib/db/schema'
+import { findLocationBySlug, insertLocation } from '~/lib/db/queries/locations'
 
 export default defineEventHandler(async (event) => {
-  console.log({ user2: event.context.user })
   if (!event.context.user) {
     return sendError(
       event,
@@ -19,7 +18,11 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, InsertLocation.safeParse)
 
   if (!body.success) {
-    const statusMessage = body.error.issues.map((issue) => `${issue.path.join('')}: ${issue.message}`).join('; ')
+    const statusMessage = body.error.issues
+      .map((issue) => {
+        return `${issue.path.join('')}: ${issue.message}`
+      })
+      .join('; ')
 
     const data = body.error.issues.reduce(
       (errors, issue) => {
@@ -40,22 +43,12 @@ export default defineEventHandler(async (event) => {
   }
 
   let slug = slugify(body.data.name)
-  const existing = await db.query.location.findFirst({
-    where: eq(location.slug, slug),
-  })
+  const existing = await findLocationBySlug(slug)
   if (existing) {
     slug += `-${nanoid()}`
   }
 
-  const [created] = await db
-    .insert(location)
-    .values({
-      ...body.data,
-      slug,
-      userId: event.context.user.id,
-      id: nanoid(),
-    })
-    .returning()
+  const location = await insertLocation(body.data, slug, event.context.user.id)
 
-  return created
+  return location
 })
