@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 const authStore = useAuthStore()
 await authStore.init()
+
+const sidebarStore = useSidebarStore()
 </script>
 
 <template>
@@ -12,6 +14,19 @@ await authStore.init()
       <div class="flex flex-col gap-2 p-2">
         <SidebarButton label="Locations" icon="tabler:map" href="/dashboard" />
         <SidebarButton label="Add Location" icon="tabler:circle-plus-filled" href="/dashboard/add" />
+        <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider"></div>
+        <div v-if="sidebarStore.loading" class="grid gap-2">
+          <div v-for="_ in [...Array(10)]" class="skeleton bg-base-100 h-9"></div>
+        </div>
+        <div v-else class="grid gap-2">
+          <SidebarButton
+            v-for="item in sidebarStore.sidebarItems"
+            :key="item.id"
+            :label="item.label"
+            :icon="item.icon"
+            :href="item.href"
+          />
+        </div>
         <div class="divider"></div>
         <SidebarButton label="Sign Out" icon="tabler:logout-2" href="/sign-out" />
       </div>
