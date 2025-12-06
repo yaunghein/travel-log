@@ -13,7 +13,7 @@ onMounted(locationStore.refresh)
       <span class="loading loading-spinner loading-xl"></span>
     </div>
 
-    <div v-else-if="locations && locations.length" class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
+    <div v-else-if="locations && locations.length" class="grid grid-cols-1 gap-2 md:grid-cols-2">
       <div v-for="location in locations" :key="location.id" class="card card-compact bg-base-300">
         <div class="card-body">
           <div class="text-base font-bold">{{ location.name }}</div>

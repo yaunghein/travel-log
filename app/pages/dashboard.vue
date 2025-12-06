@@ -39,8 +39,13 @@ onMounted(() => {
         <SidebarButton label="Sign Out" icon="tabler:logout-2" href="/sign-out" />
       </div>
     </div>
-    <div class="flex-1">
-      <NuxtPage />
+    <div class="flex flex-1">
+      <div class="w-1/2">
+        <NuxtPage />
+      </div>
+      <div class="w-1/2">
+        <AppMap />
+      </div>
     </div>
   </div>
 </template>
