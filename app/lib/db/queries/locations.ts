@@ -22,3 +22,9 @@ export async function insertLocation(insertable: InsertLocation, slug: string, u
     .values({ id: nanoid(), slug, userId, ...insertable })
     .returning()
 }
+
+export async function findLocations(userId: string) {
+  return await db.query.location.findMany({
+    where: eq(location.userId, userId),
+  })
+}
