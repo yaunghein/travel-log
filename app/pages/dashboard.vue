@@ -1,8 +1,16 @@
 <script lang="ts" setup>
+const route = useRoute()
 const authStore = useAuthStore()
+const locationStore = useLocationsStore()
+const sidebarStore = useSidebarStore()
+
 await authStore.init()
 
-const sidebarStore = useSidebarStore()
+onMounted(() => {
+  if (route.path !== '/dashboard') {
+    locationStore.refresh()
+  }
+})
 </script>
 
 <template>

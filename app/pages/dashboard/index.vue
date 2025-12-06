@@ -1,22 +1,8 @@
 <script lang="ts" setup>
-const { data, status } = await useFetch('/api/locations', { lazy: true })
+const locationStore = useLocationsStore()
+const { locations, status } = storeToRefs(locationStore)
 
-const sidebarStore = useSidebarStore()
-
-watchEffect(() => {
-  if (data.value) {
-    sidebarStore.loading = false
-    sidebarStore.sidebarItems = data.value.map((location) => {
-      return {
-        id: location.id,
-        label: location.name,
-        icon: 'tabler:map-pin-filled',
-        href: '/dashboard',
-      }
-    })
-  }
-  sidebarStore.loading = status.value === 'pending'
-})
+onMounted(locationStore.refresh)
 </script>
 
 <template>
@@ -27,8 +13,8 @@ watchEffect(() => {
       <span class="loading loading-spinner loading-xl"></span>
     </div>
 
-    <div v-else-if="data && data.length" class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
-      <div v-for="location in data" :key="location.id" class="card card-compact bg-base-300">
+    <div v-else-if="locations && locations.length" class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4">
+      <div v-for="location in locations" :key="location.id" class="card card-compact bg-base-300">
         <div class="card-body">
           <div class="text-base font-bold">{{ location.name }}</div>
           <p class="text-sm opacity-80">{{ location.description }}</p>
