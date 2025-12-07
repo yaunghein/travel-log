@@ -3,6 +3,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 const locationStore = useLocationsStore()
 const sidebarStore = useSidebarStore()
+const mapStore = useMapStore()
 
 await authStore.init()
 
@@ -43,6 +44,13 @@ onMounted(() => {
             :label="item.label"
             :icon="item.icon"
             :href="item.href"
+            :icon-color="
+              mapStore.selectedPoint?.id === item.location?.id
+                ? 'text-accent'
+                : undefined
+            "
+            @mouseenter="mapStore.selectedPoint = item.location"
+            @mouseleave="mapStore.selectedPoint = null"
           />
         </div>
         <div class="divider"></div>
