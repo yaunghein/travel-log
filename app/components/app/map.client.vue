@@ -26,6 +26,14 @@ onMounted(mapStore.init)
           <Icon name="tabler:map-pin-filled" size="32" class="text-primary" />
         </div>
       </template>
+
+      <MglPopup ref="popup">
+        <h1 class="text-sm font-bold">{{ point.label }}</h1>
+        <p v-if="point.description" class="text-xs opacity-80">
+          {{ point.description }}
+        </p>
+        <!-- <a href="#" @click.prevent="closePopup">Close popup</a> -->
+      </MglPopup>
     </MglMarker>
   </MglMap>
 </template>

@@ -19,6 +19,7 @@ export const useLocationsStore = defineStore('locationStore', () => {
         return {
           id: location.id,
           label: location.name,
+          description: location.description,
           lat: location.lat,
           long: location.long,
         }
