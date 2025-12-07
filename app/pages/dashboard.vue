@@ -15,11 +15,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-1">
-    <div class="bg-base-300 w-64 shrink-0">
-      <div class="flex justify-end p-2 pb-0">
+  <div class="bg-base-300 flex flex-1 pl-2">
+    <div class="my-2 w-64 shrink-0 rounded-sm bg-white">
+      <!-- <div class="flex justify-end p-2 pb-0">
         <Icon name="tabler:chevron-left" size="20" />
-      </div>
+      </div> -->
       <div class="flex flex-col gap-2 p-2">
         <SidebarButton label="Locations" icon="tabler:map" href="/dashboard" />
         <SidebarButton
@@ -61,11 +61,21 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="flex flex-1 flex-col overflow-hidden">
-      <div class="overflow-hidden">
+    <div
+      class="bg-base-300 flex flex-1 gap-2 overflow-hidden p-2"
+      :class="{
+        'flex-col': route.path !== '/dashboard/add',
+      }"
+    >
+      <div
+        class="overflow-hidden rounded-sm bg-white"
+        :class="{
+          'min-w-120 shrink-0 px-2': route.path === '/dashboard/add',
+        }"
+      >
         <NuxtPage />
       </div>
-      <div class="max-w-full flex-1 overflow-hidden">
+      <div class="max-w-full flex-1 overflow-hidden rounded-sm bg-white">
         <AppMap />
       </div>
     </div>
