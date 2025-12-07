@@ -6,12 +6,44 @@ import type { FetchError } from 'ofetch'
 const router = useRouter()
 const { $csrfFetch } = useNuxtApp()
 
+const mapStore = useMapStore()
+
 const submitError = ref('')
 const loading = ref(false)
 const submitted = ref(false)
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
+let lastMapPoint = mapStore.mapPoints[mapStore.mapPoints.length - 1]
+if (lastMapPoint) {
+  lastMapPoint = {
+    ...lastMapPoint,
+    long: lastMapPoint.long + 1,
+    lat: lastMapPoint.lat + 1,
+  }
+} else {
+  lastMapPoint = {
+    id: Date.now().toString(),
+    name: '',
+    description: null,
+    long: 0,
+    lat: 0,
+  }
+}
+
+const {
+  handleSubmit,
+  errors,
+  meta,
+  setErrors,
+  setFieldValue,
+  controlledValues,
+} = useForm({
   validationSchema: toTypedSchema(InsertLocation),
+  initialValues: {
+    name: '',
+    description: '',
+    long: lastMapPoint.long,
+    lat: lastMapPoint.lat,
+  },
 })
 
 const onSubmit = handleSubmit(async (values) => {
@@ -37,7 +69,20 @@ const onSubmit = handleSubmit(async (values) => {
   loading.value = false
 })
 
+effect(() => {
+  if (mapStore.addedPoint) {
+    setFieldValue('long', mapStore.addedPoint.long)
+    setFieldValue('lat', mapStore.addedPoint.lat)
+  }
+})
+
+onMounted(() => {
+  mapStore.addedPoint = lastMapPoint || null
+  mapStore.flyTo(mapStore.addedPoint)
+})
+
 onBeforeRouteLeave(() => {
+  mapStore.addedPoint = null
   if (meta.value.dirty && !submitted.value) {
     const confirm = window.confirm(
       'Are you sure you want to leave? All unsaved changes will be lost!'
@@ -46,6 +91,11 @@ onBeforeRouteLeave(() => {
     return false
   }
 })
+
+function formatNumber(number: number | null) {
+  if (!number) return 0
+  return number.toFixed(5)
+}
 </script>
 
 <template>
@@ -68,18 +118,20 @@ onBeforeRouteLeave(() => {
         type="textarea"
         :disabled="loading"
       />
-      <AppFormField
-        name="lat"
-        label="Latitide"
-        :error="errors.lat"
-        :disabled="loading"
-      />
-      <AppFormField
-        name="long"
-        label="Longitude"
-        :error="errors.long"
-        :disabled="loading"
-      />
+      <p class="mt-2 text-sm">
+        Drag the
+        <Icon
+          name="tabler:map-pin-filled"
+          size="16"
+          class="text-secondary translate-y-[0.15rem]"
+        />
+        marker to desired location.<br />
+        Or double click on the map.
+      </p>
+      <p class="text-sm text-gray-400">
+        Current Location: {{ formatNumber(controlledValues.long as number) }},
+        {{ formatNumber(controlledValues.lat as number) }}
+      </p>
       <div class="mt-4 flex justify-end gap-4">
         <button type="button" class="btn btn-ghost" @click="router.back()">
           <Icon name="tabler:arrow-left" size="20" />

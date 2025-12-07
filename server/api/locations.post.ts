@@ -1,6 +1,5 @@
 import { nanoid } from 'nanoid'
 import slugify from 'slug'
-import db from '~/lib/db'
 import { InsertLocation, location } from '~/lib/db/schema'
 import { findLocationBySlug, insertLocation } from '~/lib/db/queries/locations'
 import defineAuthenticatedEventHandler from '../utils/define-authenticated-event-handler'
