@@ -21,10 +21,20 @@ onMounted(() => {
       </div>
       <div class="flex flex-col gap-2 p-2">
         <SidebarButton label="Locations" icon="tabler:map" href="/dashboard" />
-        <SidebarButton label="Add Location" icon="tabler:circle-plus-filled" href="/dashboard/add" />
-        <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider"></div>
+        <SidebarButton
+          label="Add Location"
+          icon="tabler:circle-plus-filled"
+          href="/dashboard/add"
+        />
+        <div
+          v-if="sidebarStore.loading || sidebarStore.sidebarItems.length"
+          class="divider"
+        ></div>
         <div v-if="sidebarStore.loading" class="grid gap-2">
-          <div v-for="_ in [...Array(10)]" class="skeleton bg-base-100 h-9"></div>
+          <div
+            v-for="_ in [...Array(10)]"
+            class="skeleton bg-base-100 h-9"
+          ></div>
         </div>
         <div v-else class="grid gap-2">
           <SidebarButton
@@ -36,14 +46,18 @@ onMounted(() => {
           />
         </div>
         <div class="divider"></div>
-        <SidebarButton label="Sign Out" icon="tabler:logout-2" href="/sign-out" />
+        <SidebarButton
+          label="Sign Out"
+          icon="tabler:logout-2"
+          href="/sign-out"
+        />
       </div>
     </div>
-    <div class="flex flex-1">
-      <div class="w-1/2">
+    <div class="flex flex-1 flex-col">
+      <div class="overflow-hidden">
         <NuxtPage />
       </div>
-      <div class="w-1/2">
+      <div class="flex-1">
         <AppMap />
       </div>
     </div>

@@ -6,15 +6,22 @@ onMounted(locationStore.refresh)
 </script>
 
 <template>
-  <div class="container mx-auto max-w-6xl px-2">
-    <h1 class="my-4 text-lg">Locations</h1>
+  <div class="container">
+    <h1 class="my-4 px-2 text-lg">Locations</h1>
 
     <div v-if="status === 'pending'">
       <span class="loading loading-spinner loading-xl"></span>
     </div>
 
-    <div v-else-if="locations && locations.length" class="grid grid-cols-1 gap-2 md:grid-cols-2">
-      <div v-for="location in locations" :key="location.id" class="card card-compact bg-base-300">
+    <div
+      v-else-if="locations && locations.length"
+      class="hide-scrollbar flex gap-2 overflow-scroll px-2 pb-2"
+    >
+      <div
+        v-for="location in locations"
+        :key="location.id"
+        class="card card-compact bg-base-300 w-72 shrink-0"
+      >
         <div class="card-body">
           <div class="text-base font-bold">{{ location.name }}</div>
           <p class="text-sm opacity-80">{{ location.description }}</p>

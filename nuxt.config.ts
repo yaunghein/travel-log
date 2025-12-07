@@ -18,6 +18,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
+      noDiscovery: true,
       include: ['maplibre-gl'],
     },
   },
