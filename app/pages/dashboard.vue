@@ -15,7 +15,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-1">
-    <div class="bg-base-300 w-64">
+    <div class="bg-base-300 w-64 shrink-0">
       <div class="flex justify-end p-2 pb-0">
         <Icon name="tabler:chevron-left" size="20" />
       </div>
@@ -53,11 +53,11 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="flex flex-1 flex-col">
+    <div class="flex flex-1 flex-col overflow-hidden">
       <div class="overflow-hidden">
         <NuxtPage />
       </div>
-      <div class="flex-1">
+      <div class="max-w-full flex-1 overflow-hidden">
         <AppMap />
       </div>
     </div>
