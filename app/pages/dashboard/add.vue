@@ -132,21 +132,25 @@ function searchResultRelected(result: NominatimResult) {
           type="textarea"
           :disabled="loading"
         />
-        <p class="mt-2 text-sm">
-          Drag the
-          <Icon
-            name="tabler:map-pin-filled"
-            size="16"
-            class="text-secondary translate-y-[0.15rem]"
-          />
-          marker to desired location.<br />
-          Or double click on the map.
-        </p>
-        <p class="text-sm text-gray-400">
+        <p class="mt-3 text-sm text-gray-400">
           Current Location: {{ formatNumber(controlledValues.long as number) }},
           {{ formatNumber(controlledValues.lat as number) }}
         </p>
-        <div class="mt-4 flex justify-end gap-4">
+        <ul class="mt-2 ml-3.5 list-disc text-sm">
+          <li>
+            Drag the
+            <Icon
+              name="tabler:map-pin-filled"
+              size="16"
+              class="text-secondary translate-y-[0.15rem]"
+            />
+            marker to desired location.
+          </li>
+          <li>Double click on the map.</li>
+          <li>Search for a location below.</li>
+        </ul>
+
+        <div class="mt-4 flex justify-end gap-2">
           <button type="button" class="btn btn-ghost" @click="router.back()">
             <Icon name="tabler:arrow-left" size="20" />
             Cancel

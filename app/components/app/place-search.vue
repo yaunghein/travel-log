@@ -86,7 +86,7 @@ const onSubmit = handleSubmit(async (query) => {
       <div class="loading loading-lg"></div>
     </div>
 
-    <div class="hide-scrollbar max-h-[24.65rem] overflow-scroll pb-2">
+    <div class="hide-scrollbar max-h-90.5 overflow-scroll pb-2">
       <div
         v-for="result in searchResults"
         :key="result.place_id"
