@@ -1,54 +1,57 @@
-import type { LngLat, LngLatBounds } from 'maplibre-gl'
+import type { LngLatBounds } from 'maplibre-gl'
+
 import type { MapPoint } from '~/types/map'
 
-export const useMapStore = defineStore('mapStore', () => {
+export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<MapPoint[]>([])
   const selectedPoint = ref<MapPoint | null>(null)
-  const addedPoint = ref<MapPoint | null>(null)
-  const shouldFlyTo = ref(true)
-
-  async function selectPointWithoutFlyTo(point: MapPoint | null) {
-    shouldFlyTo.value = false
-    selectedPoint.value = point
-  }
+  const addedPoint = ref<
+    (MapPoint & { centerMap?: boolean; zoom?: number }) | null
+  >(null)
 
   async function init() {
     const { useMap } = await import('@indoorequal/vue-maplibre-gl')
     const { LngLatBounds } = await import('maplibre-gl')
 
     const map = useMap()
-    const firstPoint = mapPoints.value[0]
-    if (!firstPoint) return
 
     let bounds: LngLatBounds | null = null
-    const padding = 64
-    bounds = mapPoints.value.reduce(
-      (bounds, point) => bounds.extend([point.long, point.lat]),
-      new LngLatBounds(
-        [firstPoint.long, firstPoint.lat],
-        [firstPoint.long, firstPoint.lat]
-      )
-    )
-    map.map?.fitBounds(bounds, { padding })
+    const padding = 60
 
-    effect(async () => {
-      if (addedPoint.value) return
-      if (selectedPoint.value && shouldFlyTo.value) {
+    effect(() => {
+      const firstPoint = mapPoints.value[0]
+      if (!firstPoint) {
         map.map?.flyTo({
-          center: [selectedPoint.value.long, selectedPoint.value.lat],
+          center: [0, 0],
+          zoom: 2,
         })
-      } else {
-        map.map?.fitBounds(bounds, { padding })
+        return
       }
-      shouldFlyTo.value = true
+
+      bounds = mapPoints.value.reduce(
+        (bounds, point) => {
+          return bounds.extend([point.long, point.lat])
+        },
+        new LngLatBounds(
+          [firstPoint.long, firstPoint.lat],
+          [firstPoint.long, firstPoint.lat]
+        )
+      )
+
+      map.map?.fitBounds(bounds, {
+        padding,
+        maxZoom: 10,
+      })
     })
 
     watch(
       addedPoint,
       (newValue, oldValue) => {
-        if (newValue && !oldValue) {
+        if ((newValue && !oldValue) || newValue?.centerMap) {
           map.map?.flyTo({
             center: [newValue.long, newValue.lat],
+            speed: 0.8,
+            zoom: newValue.zoom || 6,
           })
         }
       },
@@ -58,27 +61,10 @@ export const useMapStore = defineStore('mapStore', () => {
     )
   }
 
-  async function flyTo(point: MapPoint) {
-    const { useMap } = await import('@indoorequal/vue-maplibre-gl')
-    const map = useMap()
-    const fly = () => map.map?.flyTo({ center: [point.long, point.lat] })
-    map.map?.isStyleLoaded() ? fly() : map.map?.once('load', fly)
-  }
-
-  function updateAddedPoint(location: LngLat) {
-    if (addedPoint.value) {
-      addedPoint.value.long = location.lng
-      addedPoint.value.lat = location.lat
-    }
-  }
-
   return {
     init,
+    addedPoint,
     mapPoints,
     selectedPoint,
-    addedPoint,
-    selectPointWithoutFlyTo,
-    flyTo,
-    updateAddedPoint,
   }
 })

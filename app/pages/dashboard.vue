@@ -49,9 +49,21 @@ onMounted(() => {
                 ? 'text-accent'
                 : undefined
             "
+          />
+          <!-- <SidebarButton
+            v-for="item in sidebarStore.sidebarItems"
+            :key="item.id"
+            :label="item.label"
+            :icon="item.icon"
+            :href="item.href"
+            :icon-color="
+              mapStore.selectedPoint?.id === item.location?.id
+                ? 'text-accent'
+                : undefined
+            "
             @mouseenter="mapStore.selectedPoint = item.location"
             @mouseleave="mapStore.selectedPoint = null"
-          />
+          /> -->
         </div>
         <div class="divider"></div>
         <SidebarButton

@@ -1,5 +1,5 @@
 import { sqliteTable, int, text, real } from 'drizzle-orm/sqlite-core'
-import { createInsertSchema } from 'drizzle-zod'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 import { user } from './auth'
 
@@ -21,6 +21,9 @@ export const location = sqliteTable('location', {
     .$default(() => Date.now())
     .$onUpdate(() => Date.now()),
 })
+
+export const Location = createSelectSchema(location)
+export type Location = z.infer<typeof Location>
 
 export const InsertLocation = createInsertSchema(location, {
   name: (field) =>

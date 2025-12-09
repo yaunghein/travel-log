@@ -35,3 +35,9 @@ export async function findLocations(userId: string) {
     where: eq(location.userId, userId),
   })
 }
+
+export async function findLocation(slug: string, userId: string) {
+  return await db.query.location.findFirst({
+    where: and(eq(location.slug, slug), eq(location.userId, userId)),
+  })
+}

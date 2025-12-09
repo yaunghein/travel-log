@@ -18,8 +18,12 @@ const mapStore = useMapStore()
       v-else-if="locations && locations.length"
       class="hide-scrollbar flex gap-2 overflow-scroll px-2 pb-2"
     >
-      <div
+      <NuxtLink
         v-for="location in locations"
+        :to="{
+          name: 'dashboard-locations-slug',
+          params: { slug: location.slug },
+        }"
         :key="location.id"
         class="card card-compact bg-base-300 w-72 shrink-0 cursor-pointer rounded-sm border border-gray-400/10 transition-all"
         :class="{
@@ -32,7 +36,7 @@ const mapStore = useMapStore()
           <div class="text-base font-bold">{{ location.name }}</div>
           <p class="text-sm opacity-80">{{ location.description }}</p>
         </div>
-      </div>
+      </NuxtLink>
     </div>
 
     <div v-else class="flex flex-col gap-2">

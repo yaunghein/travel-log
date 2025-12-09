@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import sendZodError from '../utils/send-zod-error'
 import defineAuthenticatedEventHandler from '../utils/define-authenticated-event-handler'
-import { SearchSchema, NominatimResult } from '../../app/types'
+import { SearchSchema, type NominatimResult } from '../../app/types'
 
 export default defineAuthenticatedEventHandler(
   defineCachedEventHandler(
