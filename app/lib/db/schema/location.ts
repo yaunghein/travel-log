@@ -23,6 +23,8 @@ export const location = sqliteTable('location', {
 })
 
 export const InsertLocation = createInsertSchema(location, {
+  name: (field) =>
+    field.nonempty('Name is required').trim().min(1, 'Name is required'),
   lat: () => z.coerce.number(),
   long: () => z.coerce.number(),
 }).omit({

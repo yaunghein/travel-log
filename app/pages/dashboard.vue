@@ -16,7 +16,7 @@ onMounted(() => {
 
 <template>
   <div class="bg-base-300 flex flex-1 pl-2">
-    <div class="my-2 w-64 shrink-0 rounded-sm bg-white">
+    <div class="bg-base-100 my-2 w-64 shrink-0 rounded-sm shadow-sm">
       <!-- <div class="flex justify-end p-2 pb-0">
         <Icon name="tabler:chevron-left" size="20" />
       </div> -->
@@ -68,14 +68,17 @@ onMounted(() => {
       }"
     >
       <div
-        class="overflow-hidden rounded-sm bg-white"
+        class="overflow-hidden rounded-sm"
         :class="{
-          'min-w-120 shrink-0 px-2': route.path === '/dashboard/add',
+          'min-w-120 shrink-0': route.path === '/dashboard/add',
+          'bg-base-100': route.path !== '/dashboard/add',
         }"
       >
         <NuxtPage />
       </div>
-      <div class="max-w-full flex-1 overflow-hidden rounded-sm bg-white">
+      <div
+        class="bg-base-100 max-w-full flex-1 overflow-hidden rounded-sm shadow-sm"
+      >
         <AppMap />
       </div>
     </div>
